@@ -3,7 +3,7 @@ description := "Yet another Typesafe Config decoder"
 apiURL := Some(url("https://circe.github.io/circe-config/"))
 
 mimaPreviousArtifacts := {
-  val versions = Set("0.3.0", "0.4.0", "0.4.1", "0.5.0", "0.6.0", "0.7.0")
+  val versions = Set("0.3.0", "0.4.0", "0.4.1", "0.5.0", "0.6.0", "0.7.0", "0.8.0")
   val versionFilter: String => Boolean = CrossVersion.partialVersion(scalaVersion.value) match {
     case Some((2, 12)) => _ => true
     case Some((2, 13)) => _ => false
@@ -151,7 +151,7 @@ lazy val `circe-sconfig` =
         libraryPackage = "org.ekrich.config",
         libraryDocUrl = "[[https://github.com/ekrich/sconfig SConfig]]"),
       mimaPreviousArtifacts := {
-        val unavailable = Set("0.3.0", "0.4.0", "0.4.1", "0.5.0", "0.6.0", "0.7.0")
+        val unavailable = Set("0.3.0", "0.4.0", "0.4.1", "0.5.0", "0.6.0", "0.7.0", "0.8.0")
         (LocalRootProject / mimaPreviousArtifacts).value.collect {
           case prev if !unavailable.contains(prev.revision) => prev.organization %%% "circe-sconfig" % prev.revision
         }
