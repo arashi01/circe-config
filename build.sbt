@@ -61,15 +61,15 @@ val Versions = new {
 
 libraryDependencies ++= Seq(
   "com.typesafe" % "config" % Versions.config,
-  "io.circe" %% "circe-core" % Versions.circe,
-  "io.circe" %% "circe-parser" % Versions.circe,
-  "io.circe" %% "circe-generic" % Versions.circe % Test,
-  "io.circe" %% "circe-testing" % Versions.circe % Test,
-  "org.typelevel" %% "cats-effect" % Versions.catsEffect % Test,
-  "org.typelevel" %% "discipline-core" % Versions.discipline % Test,
-  "org.scalacheck" %% "scalacheck" % Versions.scalaCheck % Test,
-  "org.scalatest" %% "scalatest" % Versions.scalaTest % Test,
-  "org.scalatestplus" %% "scalacheck-1-14" % Versions.scalaTestPlus % Test
+  "io.circe" %%% "circe-core" % Versions.circe,
+  "io.circe" %%% "circe-parser" % Versions.circe,
+  "io.circe" %%% "circe-generic" % Versions.circe % Test,
+  "io.circe" %%% "circe-testing" % Versions.circe % Test,
+  "org.typelevel" %%% "cats-effect" % Versions.catsEffect % Test,
+  "org.typelevel" %%% "discipline-core" % Versions.discipline % Test,
+  "org.scalacheck" %%% "scalacheck" % Versions.scalaCheck % Test,
+  "org.scalatest" %%% "scalatest" % Versions.scalaTest % Test,
+  "org.scalatestplus" %%% "scalacheck-1-14" % Versions.scalaTestPlus % Test
 )
 
 enablePlugins(GhpagesPlugin, SiteScaladocPlugin)
@@ -138,7 +138,9 @@ lazy val `circe-config` =
   (project in file("."))
 
 lazy val `circe-sconfig` =
-  (project in file(".sconfig"))
+  crossProject(JVMPlatform, JSPlatform)
+    .withoutSuffixFor(JVMPlatform)
+    .in(file(".sconfig"))
     .enablePlugins(ConfigLibraryGenerator)
     .settings(
       description := "Yet another Typesafe Config AST decoder",
@@ -149,9 +151,11 @@ lazy val `circe-sconfig` =
         libraryPackage = "org.ekrich.config",
         libraryDocUrl = "[[https://github.com/ekrich/sconfig SConfig]]"),
       libraryDependencies ++= (LocalRootProject / libraryDependencies).value,
-      libraryDependencies += "org.ekrich" %% "sconfig" % Versions.sconfig,
-      libraryDependencies -= "com.typesafe" % "config" % Versions.config,
+      libraryDependencies += "org.ekrich" %%% "sconfig" % Versions.sconfig,
+      libraryDependencies -= "com.typesafe" % "config" % Versions.config
+    )
+    .jvmSettings(
       doctestTestFramework := (LocalRootProject / doctestTestFramework).value
     )
 
-aggregateProjects(`circe-sconfig`)
+aggregateProjects(`circe-sconfig`.jvm, `circe-sconfig`.js)
