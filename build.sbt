@@ -86,6 +86,14 @@ scalacOptions in(Compile, doc) := Seq(
   baseDirectory.in(LocalRootProject).value.getAbsolutePath
 )
 
+scalacOptions in(Compile, console) --= Seq("-Ywarn-unused-import", "-Ywarn-unused:imports")
+scalacOptions in(Test, console) := (scalacOptions in(Compile, console)).value
+
+publishMavenStyle := true
+pomIncludeRepository := { _ =>
+  false
+}
+
 inThisBuild(
   Seq(
     scalacOptions ++= Seq(
@@ -125,14 +133,6 @@ inThisBuild(
     )
   )
 )
-
-scalacOptions in(Compile, console) --= Seq("-Ywarn-unused-import", "-Ywarn-unused:imports")
-scalacOptions in(Test, console) := (scalacOptions in(Compile, console)).value
-
-publishMavenStyle := true
-pomIncludeRepository := { _ =>
-  false
-}
 
 lazy val `circe-config` =
   (project in file("."))
